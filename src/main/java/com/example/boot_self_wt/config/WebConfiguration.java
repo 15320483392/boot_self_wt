@@ -43,8 +43,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     private ArrayList<String> getIncludePathPatterns() {
         ArrayList<String> list = new ArrayList<>();
         String[] urls = {
-                "/org/**",
-                "/post/**"
+                "/userm/**"
         };
         Collections.addAll(list, urls);
         return list;

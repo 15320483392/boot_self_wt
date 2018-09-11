@@ -6,15 +6,14 @@ import java.io.Serializable;
  * Created by ace on 2017/9/10.
  */
 public class JWTInfo implements Serializable,IJWTInfo {
+    //登陆账号
     private String loginName;
+    //用户id
     private String userId;
+    //用户名
     private String staffName;
-
-
-
+    // 租户名
     private String tenantId;
-
-
 
     public JWTInfo(String loginName, String userId, String staffName,String tenantId) {
         this.loginName = loginName;

@@ -16,7 +16,7 @@ public class RateLimiterInterceptor extends HandlerInterceptorAdapter {
     private RateLimiter rateLimiter = RateLimiter.create(15.0);
 
     /**
-     * 尝试获取令牌
+     * 尝试获取token令牌
      * @return
      */
     private boolean tryAcquire(){
