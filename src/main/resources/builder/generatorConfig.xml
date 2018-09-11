@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--<properties resource="dev.properties"/>-->
+    <context id="MySQL" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="mergeable" value="false"/>
+
+        <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/myself_boot?useUnicode=true&amp;characterEncoding=UTF8"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+        <javaModelGenerator targetPackage="${targetModelPackage}" targetProject="${targetJavaProject}"/>
+
+        <sqlMapGenerator targetPackage="${targetXMLPackage}" targetProject="${targetJavaProject}"/>
+
+        <javaClientGenerator targetPackage="${targetMapperPackage}" targetProject="${targetJavaProject}"
+                             type="XMLMAPPER"/>
+
+        <!--<table tableName="base_user" domainObjectName="User" >-->
+        <!--<generatedKey column="id" identity="false" sqlStatement="myql"/>-->
+        <!--</table>-->
+        <!--<table tableName="base_menu" domainObjectName="Menu" >-->
+        <!--<generatedKey column="id" identity="false" sqlStatement="myql"/>-->
+        <!--</table>-->
+        <!--<table tableName="base_group" domainObjectName="Group" >
+            &lt;!&ndash;<generatedKey column="id" identity="true"/>&ndash;&gt;
+        </table>
+        <table tableName="base_group_type" domainObjectName="GroupType" >
+        </table>-->
+        <!--<table tableName="base_resource_authority" domainObjectName="ResourceAuthority" >
+        </table>-->
+        <!--<table tableName="base_element" domainObjectName="Element">-->
+        <!--</table>-->
+        <!--<table tableName="gate_client" domainObjectName="GateClient">-->
+        <!--</table>-->
+        <!--<table tableName="hr_company" domainObjectName="HrCompany"/>-->
+        <!--<table tableName="hr_post" domainObjectName="HrPost"/>
+        <table tableName="hr_post_role" domainObjectName="HrPostRole"/>
+        <table tableName="hr_post_staff" domainObjectName="HrPostStaff"/>
+        <table tableName="hr_role" domainObjectName="HrRole"/>
+        <table tableName="sys_post" domainObjectName="SysPost"/>
+        <table tableName="hr_talented_resource" domainObjectName="HrTalentedResource"/>-->
+
+        <table tableName="login" domainObjectName="Login">
+        </table>
+
+    </context>
+</generatorConfiguration>
