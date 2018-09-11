@@ -1,5 +1,6 @@
 package com.example.boot_self_wt.controller;
 
+import com.example.boot_self_wt.common.msg.ObjectRestResponse;
 import com.example.boot_self_wt.common.utils.user.JwtAuthenticationRequest;
 import com.example.boot_self_wt.common.utils.user.JwtAuthenticationResponse;
 import com.example.boot_self_wt.service.LoginService;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +43,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "refresh", method = RequestMethod.GET)
+    @ResponseBody
     public ResponseEntity<?> refreshUserLoginToken(
             HttpServletRequest request) {
         //获取请求头中的token
@@ -52,5 +55,24 @@ public class LoginController {
         } else {
             return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
         }
+    }
+
+    @ApiOperation(value = "注册")
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    @ResponseBody
+    public ObjectRestResponse registeredAccount (@RequestBody JwtAuthenticationRequest authenticationRequest) {
+        //验证用户是否存在
+        try {
+            if (loginService.vcnUser(authenticationRequest.getLoginName())) {
+                return new ObjectRestResponse().msg("用户已存在!").rel(false);
+            }
+            //加密密码
+            String password = new BCryptPasswordEncoder(12).encode(authenticationRequest.getPassword());
+            loginService.addLogUser(authenticationRequest.getLoginName(),password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ObjectRestResponse().msg("注册失败,数据异常!").rel(false);
+        }
+        return new ObjectRestResponse().msg("注册成功!").rel(true);
     }
 }

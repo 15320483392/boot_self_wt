@@ -9,4 +9,8 @@ import com.example.boot_self_wt.common.utils.user.JwtAuthenticationRequest;
 public interface LoginService {
     //用户登录
     String login(JwtAuthenticationRequest authenticationRequest) throws Exception;
+
+    boolean vcnUser (String loginName);
+
+    void addLogUser(String loginName,String passWord);
 }
