@@ -1,5 +1,6 @@
 package com.example.boot_self_wt.service.Impl;
 
+import com.example.boot_self_wt.common.utils.RedisUtils;
 import com.example.boot_self_wt.common.utils.jwt.JWTInfo;
 import com.example.boot_self_wt.common.utils.user.JwtAuthenticationRequest;
 import com.example.boot_self_wt.common.utils.user.JwtTokenUtil;
@@ -10,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 /**
@@ -17,6 +19,7 @@ import org.springframework.util.StringUtils;
  * @date 2018/9/11 9:33
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
@@ -27,6 +30,9 @@ public class LoginServiceImpl implements LoginService {
 
     @Autowired
     private LoginMapper loginMapper;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -46,9 +52,12 @@ public class LoginServiceImpl implements LoginService {
         if (!StringUtils.isEmpty(user.getUserId())) {
             //生成token
             token = jwtTokenUtil.generateToken(new JWTInfo(user.getLoginName(),  user.getUserId() + "", user.getName(),"wt"));
+            redisUtils.addRedisLogin(users.getLoginName());
         }
         return token;
     }
+
+
 
     @Override
     public boolean vcnUser(String loginName) {
