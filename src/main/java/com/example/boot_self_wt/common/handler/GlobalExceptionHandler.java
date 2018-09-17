@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by ace on 2017/9/8.
- */
-@ControllerAdvice("com.sevnce")
+@ControllerAdvice("com.example")
 @ResponseBody
 public class GlobalExceptionHandler {
     private Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);

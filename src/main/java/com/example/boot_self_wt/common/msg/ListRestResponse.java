@@ -1,11 +1,5 @@
 package com.example.boot_self_wt.common.msg;
 
-/**
- * ${DESCRIPTION}
- *
- * @author wanghaobin
- * @create 2017-06-09 7:32
- */
 public class ListRestResponse<T> {
     String msg;
     T result;

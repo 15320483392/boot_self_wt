@@ -3,9 +3,6 @@ package com.example.boot_self_wt.common.msg;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * Created by Ace on 2017/6/11.
- */
 @ApiModel(value="ObjectRestResponse",description="接口返回数据")
 public class ObjectRestResponse<T> extends BaseResponse {
 

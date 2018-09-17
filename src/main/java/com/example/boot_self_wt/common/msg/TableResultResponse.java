@@ -2,12 +2,7 @@ package com.example.boot_self_wt.common.msg;
 
 import java.util.List;
 
-/**
- * ${DESCRIPTION}
- *
- * @author wanghaobin
- * @create 2017-06-14 22:40
- */
+
 public class TableResultResponse<T> extends BaseResponse {
 
     TableData<T> data;

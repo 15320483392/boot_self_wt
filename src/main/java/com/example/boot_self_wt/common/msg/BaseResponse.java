@@ -2,9 +2,6 @@ package com.example.boot_self_wt.common.msg;
 
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * Created by ace on 2017/8/23.
- */
 public class BaseResponse {
 
     @ApiModelProperty(name="status",value="请求返回编码")
