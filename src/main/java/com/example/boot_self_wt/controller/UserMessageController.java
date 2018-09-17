@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * @author WTar
+ * @author wangtao
  * @date 2018/9/11 11:50
  */
 @Controller
@@ -16,6 +16,6 @@ public class UserMessageController {
     @RequestMapping(value = "tes", method = RequestMethod.POST)
     @ResponseBody
     public void test(){
-
+        System.out.println("进入程序");
     }
 }
