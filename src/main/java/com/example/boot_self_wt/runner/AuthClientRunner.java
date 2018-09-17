@@ -1,0 +1,67 @@
+package com.example.boot_self_wt.runner;
+
+import com.example.boot_self_wt.common.msg.BaseResponse;
+import com.example.boot_self_wt.common.msg.ObjectRestResponse;
+import com.example.boot_self_wt.config.ServiceAuthConfig;
+import com.example.boot_self_wt.config.UserAuthConfig;
+import com.example.boot_self_wt.service.ClientService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
+
+/**
+ * 监听完成时触发
+ *
+ * @author ace
+ * @create 2017/11/29.
+ */
+@Configuration
+@Slf4j
+public class AuthClientRunner implements CommandLineRunner {
+
+    @Autowired
+    private ServiceAuthConfig serviceAuthConfig;
+
+    @Autowired
+    private UserAuthConfig userAuthConfig;
+
+    @Autowired
+    private ClientService serviceAuthFeign;
+
+    @Override
+    public void run(String... args) throws Exception {
+        log.info("初始化加载用户pubKey");
+        try {
+            refreshUserPubKey();
+        }catch(Exception e){
+            log.error("初始化加载用户pubKey失败,1分钟后自动重试!",e);
+        }
+        log.info("初始化加载客户pubKey");
+        try {
+            refreshServicePubKey();
+        }catch(Exception e){
+            log.error("初始化加载客户pubKey失败,1分钟后自动重试!",e);
+        }
+    }
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void refreshUserPubKey(){
+        //BaseResponse resp = clientController.getUserPublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret())
+        BaseResponse resp = serviceAuthFeign.getUserPublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (resp.getStatus() == HttpStatus.OK.value()) {
+            ObjectRestResponse<byte[]> userResponse = (ObjectRestResponse<byte[]>) resp;
+            this.userAuthConfig.setPubKeyByte(userResponse.getData());
+        }
+    }
+    @Scheduled(cron = "0 0/1 * * * ?")
+    public void refreshServicePubKey(){
+        BaseResponse resp = serviceAuthFeign.getServicePublicKey(serviceAuthConfig.getClientId(), serviceAuthConfig.getClientSecret());
+        if (resp.getStatus() == HttpStatus.OK.value()) {
+            ObjectRestResponse<byte[]> userResponse = (ObjectRestResponse<byte[]>) resp;
+            this.serviceAuthConfig.setPubKeyByte(userResponse.getData());
+        }
+    }
+
+}
