@@ -2,6 +2,8 @@ package com.example.boot_self_wt.config;
 
 import com.example.boot_self_wt.common.filter.RateLimiterInterceptor;
 import com.example.boot_self_wt.common.filter.ServiceAuthRestInterceptor;
+import com.example.boot_self_wt.common.filter.UserAuthRestInterceptor;
+import com.example.boot_self_wt.common.handler.GlobalExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,12 +19,19 @@ import java.util.Collections;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
+    @Bean
+    GlobalExceptionHandler getGlobalExceptionHandler() {
+        return new GlobalExceptionHandler();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //添加拦截器
         registry.addInterceptor(getRateLimiterInterceptor()).
                 addPathPatterns("/**");
         registry.addInterceptor(getServiceAuthRestInterceptor())
+                .addPathPatterns(getIncludePathPatterns());
+        registry.addInterceptor(getUserAuthRestInterceptor())
                 .addPathPatterns(getIncludePathPatterns());
     }
 
@@ -34,6 +43,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     ServiceAuthRestInterceptor getServiceAuthRestInterceptor() {
         return new ServiceAuthRestInterceptor();
+    }
+
+    @Bean
+    UserAuthRestInterceptor getUserAuthRestInterceptor() {
+        return new UserAuthRestInterceptor();
     }
 
     /**
